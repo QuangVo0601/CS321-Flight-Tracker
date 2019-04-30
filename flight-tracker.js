@@ -1,6 +1,6 @@
 const request = require("request");
 
-const apiKey = "117986.5w5ElPStqtCEEfG"
+const apiKey = "122052.RM15o9S6clA8Rsa"
 let intervalId; //used to stop/change interval
 let requestRate; //Request APRS data time in ms
 let url;
