@@ -1,0 +1,81 @@
+<style>
+    body {
+        padding: 50px;
+    }
+</style>
+  <h1>Coordinates Lookup</h1>
+  <div class="form-group">
+    <label for="name2">Name (of your choice):</label>
+    <input type="text" class="form-control" id="name2" required>
+  </div>
+  <div class="form-group">
+    <label for="lat">Latitude:</label>
+    <input type="text" class="form-control" id="lat" required>
+  </div>
+  <div class="form-group">
+    <label for="long">Longtitude:</label>
+    <input type="text" class="form-control" id="long" required>
+  </div>
+  <div class="form-group">
+    <label for="alt">Altitude:</label>
+    <input type="text" class="form-control" id="alt" required>
+  </div>
+  <button type="button" class="btn btn-primary btn-lg" id="coords-search">GO</button>
+  
+  <h1>APRS Callsign Lookup</h1>
+<div style="color:darkorange" id="error"></div>
+<form action="#">
+  <div class="form-group">
+    <label for="name">APRS Callsign:</label>
+    <input type="text" class="form-control" id="name" required>
+  </div>
+  <div class="form-group">
+    <label for="time">Time Interval (min: 60 seconds):</label>
+    <input type="Number" class="form-control" id="time" required min="60" placeholder="60" value="60">
+  </div>
+  <button type="button" class="btn btn-primary btn-lg" id="aprs-search">GO</button>
+</div>
+</form>
+
+<script>
+  $(() =>{
+    $(document).on('click', '#coords-search', ()=>{
+      let name2 = $('#name2').val();
+      let lat = $('#lat').val();
+      let lng = $('#long').val();
+      let alt = $('#alt').val();
+
+      if(!name2 || !lat || !long || !alt){
+        return;
+      }
+
+      $.post('/insert', {name: name2, lat: lat, long: lng, altitude: alt}).done(() =>{
+        window.location.href = "/map"
+      })
+    });
+  });
+
+</script>
+
+<script>
+  $(() =>{
+    $(document).on('click', '#aprs-search', ()=>{
+      let name = $('#name').val();
+      let time = $('#time').val();
+
+      if(!name || !time){
+        return;
+      }
+
+      if(time < 60){
+        $('#error').text("Time cannot be less than 60 seconds")
+        return;
+      }
+
+      $.post('/', {name: name, time: time}).done(() =>{
+        window.location.href = "/map"
+      })
+    });
+  });
+
+</script>

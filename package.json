@@ -1,0 +1,29 @@
+{
+  "name": "aprs",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.3",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.3.15",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuangVo0601/CS321-Flight-Tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/QuangVo0601/CS321-Flight-Tracker/issues"
+  },
+  "homepage": "https://github.com/QuangVo0601/CS321-Flight-Tracker#readme",
+  "description": ""
+}
