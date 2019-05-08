@@ -24,6 +24,10 @@ app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs')
+// JK, don't use handlebars
+//app.set('views', path.join(__dirname, 'views'));
+//app.engine('html', require('ejs').renderFile);
+//app.set('view engine', 'html');
 
 // Set up sessions
 app.use(session({
@@ -51,17 +55,17 @@ app.post('/', (req, res)=>{
 		flightTracker(req.body.name, req.body.time); //start flight tracker
 		res.sendStatus(200);
 	}else{
-		res.render("error", {error: "Invalid request, must pass name and time"})
+		res.render("error", {error: "Invalid request, must pass callsign and refresh rate"})
 	}
 })
 
 // Display the map
 app.get('/map', (req, res) =>{
-	if(!req.session || !req.session.started){
-		res.render('index')
-	}else{
+//	if(!req.session || !req.session.started){
+//		res.render('index')
+//	}else{
 		res.render('map')
-	}
+//	}
 });
 
 // drop the collection from database
@@ -79,17 +83,17 @@ app.post('/drop', (req, res) =>{
 
 // Insert a new APRS record to the database
 app.post("/insert", (req, res) =>{
-	if(!req.body.name || !req.body.lat || !req.body.long){
-		res.status(400).send("Must send: name, lat, long, altitude");
+	if(!req.body.callsign || !req.body.latitude || !req.body.longitude){
+		res.status(400).send("Must send: callsign, latitude, longitude, altitude");
 		console.log("Bad insert request");
 	}else{
 		//added 2019
 		req.session.started = true;
 		//
 		let aprsRecord = new AprsModel({
-			name: req.body.name,
-			lat: req.body.lat,
-			long: req.body.long,
+			callsign: req.body.callsign,
+			latitude: req.body.latitude,
+			longitude: req.body.longitude,
 			altitude: req.body.altitude
 		})
 
@@ -134,7 +138,9 @@ app.listen(app.get('port'), ()=> {
 
 	//connect to the database
 	//let url = "mongodb://localhost:27017/flighttracker"
-	let url = "mongodb://cs321:CS321GMU@ds113134.mlab.com:13134/heroku_ncnd7kfp";
+	//let url = "mongodb+srv://general:123@flighttracker-yyoiq.mongodb.net/test?retryWrites=true";
+	//let url = "mongodb://cs321:CS321GMU@ds113134.mlab.com:13134/heroku_ncnd7kfp";
+	let url = "mongodb+srv://gen:123@flighttracker-yyoiq.mongodb.net/test?retryWrites=true";
 	mongoose.connect(url, {useNewUrlParser: true}).then(() =>{
 		console.log("Connected to the database");
 		dbconnected = true;

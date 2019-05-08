@@ -5,10 +5,10 @@ let intervalId; //used to stop/change interval
 let requestRate; //Request APRS data time in ms
 let url;
 
-module.exports = StartAprs = (name, time) =>{
-    requestRate = time * 1000;
-    url = `https://api.aprs.fi/api/get?name=${name}&what=loc&apikey=${apiKey}&format=json`;
-    console.log(`Getting APRS data ${name} every ${requestRate / 1000} seconds\n`);
+module.exports = StartAprs = (callsign, rate) =>{
+    requestRate = rate * 1000;
+    url = `https://api.aprs.fi/api/get?name=${callsign}&what=loc&apikey=${apiKey}&format=json`;
+    console.log(`Getting APRS data ${callsign} every ${requestRate / 1000} seconds\n`);
     RequestData();
     intervalId = setInterval(RequestData, requestRate);
 }
@@ -37,19 +37,19 @@ function RequestData(){
                     data.altitude = 0;
                 }
 
-                console.log("  Name: " + data.name);
-                console.log("  Lat: " + data.lat);
-                console.log("  Long: " + data.lng);
+                console.log("  Callsign: " + data.name);
+                console.log("  Latitude: " + data.lat);
+                console.log("  Longitude: " + data.lng);
                 console.log("  Altitude: " + data.altitude);
                 if(!data.lat || !data.lng){
                     console.log("\tAprs data is missing location lata, not saving to database...");
                 }
 
-                request.post('https://cs321-flight-tracker-2019.herokuapp.com/insert', {
+                request.post("http://104.248.57.178:3000/insert", {
                     form:{
-                        name: data.name,
-                        lat: data.lat,
-                        long: data.lng,
+                        callsign: data.name,
+                        latitude: data.lat,
+                        longitude: data.lng,
                         altitude: data.altitude
                     }
                 })
