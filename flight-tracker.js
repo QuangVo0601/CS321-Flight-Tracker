@@ -1,11 +1,11 @@
-const request = require("request");
+import request, { post } from "request";
 
 const apiKey = "122052.RM15o9S6clA8Rsa"
 let intervalId; //used to stop/change interval
 let requestRate; //Request APRS data time in ms
 let url;
 
-module.exports = StartAprs = (callsign, rate) =>{
+export default StartAprs = (callsign, rate) =>{
     requestRate = rate * 1000;
     url = `https://api.aprs.fi/api/get?name=${callsign}&what=loc&apikey=${apiKey}&format=json`;
     console.log(`Getting APRS data ${callsign} every ${requestRate / 1000} seconds\n`);
@@ -45,7 +45,7 @@ function RequestData(){
                     console.log("\tAprs data is missing location lata, not saving to database...");
                 }
 
-                request.post("http://104.248.57.178:3000/insert", {
+                post("http://104.248.57.178:3000/insert", {
                     form:{
                         callsign: data.name,
                         latitude: data.lat,

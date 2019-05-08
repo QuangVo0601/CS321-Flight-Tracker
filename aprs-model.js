@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from 'mongoose';
+const Schema = _Schema;
 
 let schema = new Schema({
     callsign: {type: String, required: true},
@@ -10,4 +10,4 @@ let schema = new Schema({
     speed: {type: Number}
 })
 
-module.exports = mongoose.model('Aprs', schema);
+export default model('Aprs', schema);
