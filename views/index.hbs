@@ -3,7 +3,9 @@
         padding: 50px;
     }
 </style>
-  <h1>Coordinates Lookup</h1>
+
+<h1>Coordinates Lookup</h1>
+<form action="#">
   <div class="form-group">
     <label for="name2">Name (of your choice):</label>
     <input type="text" class="form-control" id="name2" required>
@@ -21,8 +23,9 @@
     <input type="text" class="form-control" id="alt" required>
   </div>
   <button type="button" class="btn btn-primary btn-lg" id="coords-search">GO</button>
-  
-  <h1>APRS Callsign Lookup</h1>
+</form>
+
+<h1>APRS Callsign Lookup</h1>
 <div style="color:darkorange" id="error"></div>
 <form action="#">
   <div class="form-group">
@@ -34,8 +37,8 @@
     <input type="Number" class="form-control" id="time" required min="60" placeholder="60" value="60">
   </div>
   <button type="button" class="btn btn-primary btn-lg" id="aprs-search">GO</button>
-</div>
 </form>
+
 
 <script>
   $(() =>{
@@ -49,12 +52,11 @@
         return;
       }
 
-      $.post('/insert', {name: name2, lat: lat, long: lng, altitude: alt}).done(() =>{
+      $.post('/insert', {callsign: name2, latitude: lat, longitude: lng, altitude: alt}).done(() =>{
         window.location.href = "/map"
       })
     });
   });
-
 </script>
 
 <script>
@@ -64,6 +66,7 @@
       let time = $('#time').val();
 
       if(!name || !time){
+        $('#error').text("Please enter callsign and update rate")
         return;
       }
 
@@ -72,10 +75,10 @@
         return;
       }
 
+      $('#error').text("")
       $.post('/', {name: name, time: time}).done(() =>{
         window.location.href = "/map"
       })
     });
   });
-
 </script>
