@@ -1,12 +1,12 @@
 //need to change the code to make it different
-import flightTracker from "./flight-tracker";
-import AprsModel, { remove, find } from './aprs-model';
-import express from 'express';
-import { join } from 'path';
-import { urlencoded, json } from "body-parser";
-import session from 'express-session';
-import exphbs from 'express-handlebars';
-import { connection, connect } from 'mongoose';
+const flightTracker = require("./flight-tracker");
+const AprsModel = require('./aprs-model');
+const express = require('express');
+const path = require('path');
+const bodyParser = require("body-parser");
+const session = require('express-session');
+const exphbs = require('express-handlebars');
+const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 
 let dbconnected = false;
@@ -17,11 +17,11 @@ app.set('port', (process.env.PORT || 3000));
 // -- MIDDLE-WARE -- //
 
 // Use body-parser
-app.use(urlencoded({ extended: false }));
-app.use(json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // use Handlebars view engine
-app.set('views', join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs')
 // JK, don't use handlebars
@@ -31,7 +31,7 @@ app.set('view engine', '.hbs')
 
 // Set up sessions
 app.use(session({
-	store: new MongoStore({ mongooseConnection: connection }),
+	store: new MongoStore({ mongooseConnection: mongoose.connection }),
     secret: "#$#$^*&GBFSDF&^",
     resave: false,
     saveUninitialized: false,
@@ -75,7 +75,7 @@ app.get('/drop', (req, res) =>{
 
 // drop handler
 app.post('/drop', (req, res) =>{
-	remove({}, () =>{
+	AprsModel.remove({}, () =>{
 		console.log('Dropped collection from database')
 		res.sendStatus(200)
 	})
@@ -113,7 +113,7 @@ app.post("/insert", (req, res) =>{
 // Get all aprs records from database ordered by ascending date
 app.post('/getrecords', (req, res) =>{
 	if(dbconnected){
-		find({}).sort({date: 'ascending'}).exec((err, docs)=>{ 
+		AprsModel.find({}).sort({date: 'ascending'}).exec((err, docs)=>{ 
 			res.send(docs)
 		});
 	}else{
@@ -124,7 +124,7 @@ app.post('/getrecords', (req, res) =>{
 // Get the last inserted record in the collection
 app.post('/getlastrecord', (req, res) =>{
 	if(dbconnected){
-		find({}).sort({_id:-1}).limit(1).exec((err, doc)=>{ 
+		AprsModel.find({}).sort({_id:-1}).limit(1).exec((err, doc)=>{ 
 			res.send(doc)
 		});
 	}else{
@@ -141,7 +141,7 @@ app.listen(app.get('port'), ()=> {
 	//let url = "mongodb+srv://general:123@flighttracker-yyoiq.mongodb.net/test?retryWrites=true";
 	//let url = "mongodb://cs321:CS321GMU@ds113134.mlab.com:13134/heroku_ncnd7kfp";
 	let url = "mongodb+srv://gen:123@flighttracker-yyoiq.mongodb.net/test?retryWrites=true";
-	connect(url, {useNewUrlParser: true}).then(() =>{
+	mongoose.connect(url, {useNewUrlParser: true}).then(() =>{
 		console.log("Connected to the database");
 		dbconnected = true;
 	}).catch((err) =>{
