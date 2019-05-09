@@ -48,8 +48,8 @@
         data.forEach((point) =>{
           point = {
             type: 'point',
-            x: point.long,
-            y: point.lat,
+            x: point.longitude,
+            y: point.latitude,
             z: point.altitude
           }
 
@@ -67,8 +67,8 @@
              let point, pointGraphic;
              point = {
                 type: 'point',
-                x: data[0].long,
-                y: data[0].lat,
+                x: data[0].longitude,
+                y: data[0].latitude,
                 z: data[0].altitude
              }
 
