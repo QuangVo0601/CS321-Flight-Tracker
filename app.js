@@ -75,7 +75,7 @@ app.get('/drop', (req, res) =>{
 
 // drop handler
 app.post('/drop', (req, res) =>{
-	AprsModel.remove({}, () =>{
+	AprsModel.deleteMany({}, () =>{
 		console.log('Dropped collection from database')
 		res.sendStatus(200)
 	})
