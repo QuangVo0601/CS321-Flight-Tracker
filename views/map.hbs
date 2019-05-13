@@ -24,7 +24,6 @@
 
       let map = new Map({ basemap: "streets"});
 
-      // Create a graphics layer
       let graphicsLayer = new GraphicsLayer();
 
       var view = new SceneView({
@@ -35,9 +34,9 @@
         });
 
       markerSymbol = {
-        type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+        type: "simple-marker", 
         color: [255, 0, 127],
-        outline: { // autocasts as new SimpleLineSymbol()
+        outline: { 
           color: [255, 255, 255],
           width: 3
         }

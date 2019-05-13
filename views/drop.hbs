@@ -15,10 +15,10 @@
 
 <script>
 function deleteData() {
-    if(confirm("Do you want to delete all data?")){
+    if(confirm("Do you want to delete all records?")){
         $.post("/drop").done(() =>{
             $('#toHide').hide();
-            $('#message').text("All data deleted, going back to the main page...")
+            $('#message').text("All records deleted, going back to the main page...")
             setTimeout(() =>{
                 window.location.href = "/"
             }, 3000)
