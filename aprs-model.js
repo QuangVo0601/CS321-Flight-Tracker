@@ -1,3 +1,5 @@
+// This file creates a new schema in mongoDB
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
